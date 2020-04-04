@@ -16,9 +16,9 @@ yka3b <- readWave("data/YKA003B.wav")
 #  Very long samples will return very large values for ACI. 
 #  The developer recommends to divide by number of minutes 
 #  to get a range of values easier to compare.
-acoustic_complexity(yka3a, min_freq = 500, max_freq = 6000, j = 5, fft_w = 512)
+aci.lim <- acoustic_complexity(yka3a, min_freq = 500, max_freq = 6000, j = 5, fft_w = 512) 
 
-acoustic_complexity(yka3a, min_freq = NA, max_freq = NA, j = 5, fft_w = 512)
+aci.all <- acoustic_complexity(yka3b, min_freq = NA, max_freq = NA, j = 5, fft_w = 512)
 
 #yka3a (10am, June 2018) 
 #RESULT, min_freq = 500, max_freq 6000
@@ -32,4 +32,32 @@ acoustic_complexity(yka3a, min_freq = NA, max_freq = NA, j = 5, fft_w = 512)
 #RESULT, min_freq = N/A, max_freq N/A
 # ACI (total) L: 5916.75, R: 5842.826; ACI (by minute) L: 1964.91, R: 1940.36 
 
+data <- read_csv("data/output.csv")
+data
+
+?mutate
+
+data_new <- mutate(data, ACI = (Left_ch + Right_ch) / 2)
+
+data_new
+
+# Include line of code to avg left and right channel observations.
+
+data_new$Date <- as.Date(data_new$Date,format="%d/%m/%Y")
+
+ggplot(
+  data = data_new,
+  mapping = aes(x = Date, y = ACI, colour = Ident)
+) +
+  geom_point(alpha = 0.9)
+# amend scale so that this goes from zero
+
+view(new_data)
+
+#Q: how to save outputs from Console? R Markdown notebooks, knitr?
+# Possible solution:
+#cat("Tests output", file = "data/tests.txt")  # Title: this simply writes a title in the txt file
+#cat("\n\n", file = "data/tests.txt", append = TRUE)      #add two new lines
+#cat("ACI Test\n", file = "data/tests.txt", append = TRUE)
+#capture.output(aci.lim, file = "data/tests.txt", append = TRUE")
 
