@@ -33,9 +33,6 @@ aci.all <- acoustic_complexity(yka3b, min_freq = NA, max_freq = NA, j = 5, fft_w
 # ACI (total) L: 5916.75, R: 5842.826; ACI (by minute) L: 1964.91, R: 1940.36 
 
 data <- read_csv("data/output.csv")
-data
-
-?mutate
 
 data_new <- mutate(data, ACI = (Left_ch + Right_ch) / 2)
 
@@ -45,14 +42,14 @@ data_new
 
 data_new$Date <- as.Date(data_new$Date,format="%d/%m/%Y")
 
+data_new
+
 ggplot(
   data = data_new,
   mapping = aes(x = Date, y = ACI, colour = Ident)
 ) +
-  geom_point(alpha = 0.9)
-# amend scale so that this goes from zero
+  geom_point(alpha = 0.9) + ylim(1000, NA)
 
-view(new_data)
 
 #Q: how to save outputs from Console? R Markdown notebooks, knitr?
 # Possible solution:
